@@ -53,8 +53,8 @@ var routes = [
   },
   {
     path: "/tables",
-    name: "Tables",
-    icon: "ni ni-bullet-list-67 text-red",
+    name: "Users",
+    icon: "ni ni-single-02 text-red",
     component: Tables,
     layout: "/admin"
   },

@@ -54,8 +54,8 @@ class Login extends React.Component {
       history.push('/admin/index');
     }
     this.state = {
-      phone: "1",
-      password: "1",
+      phone: "admin",
+      password: "admin",
       pending: false,
       success: null,
     };
