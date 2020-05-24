@@ -40,7 +40,7 @@ import Header from "components/Headers/Header.js";
 import Axios from "axios";
 import * as constant from '../../constants/config'
 
-class Tables extends React.Component {
+class Users extends React.Component {
 
   constructor(props) {
     super(props);
@@ -66,8 +66,8 @@ class Tables extends React.Component {
       id: element.id,
       state: element.state === 1 ? 0 : 1,
     };
-    Axios.post(constant.serverdomain + "admin/updateuser", entity).then(res => {
-      this.setState(res.data);
+    Axios.post(constant.serverdomain + "admin/updateuser", entity).then(() => {
+      this.getListUser();
     })
   }
 
@@ -115,7 +115,7 @@ class Tables extends React.Component {
               </Badge>}
           </td>
           <td>
-            {elements.date}
+            {elements.date.substring(0,10).toString('')}
           </td>
           <td>
             {elements.state === 1 ? <Badge color="" className="badge-dot mr-4">
@@ -141,7 +141,7 @@ class Tables extends React.Component {
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
                 <DropdownItem
-                  href="#pablo"
+                  href=""
                   onClick={e => this.activeUser(elements)}
                 >
                   {elements.state === 1 ? 'Inactive' : 'Active'}
@@ -168,7 +168,7 @@ class Tables extends React.Component {
         <Header />
         {/* Page content */}
         <Container className="mt--7" fluid>
-          {/* Table */}
+          {/* Table Customers*/}
           <Row style={{marginBottom: '20px'}}>
             <div className="col">
               <Card className="shadow">
@@ -247,7 +247,7 @@ class Tables extends React.Component {
             </div>
           </Row>
 
-          {/* Table */}
+          {/* Table Sellers*/}
           <Row style={{marginBottom: '20px'}}>
             <div className="col">
               <Card className="shadow">
@@ -326,7 +326,7 @@ class Tables extends React.Component {
             </div>
           </Row>
 
-          {/* Table */}
+          {/* Table Admins*/}
           <Row style={{marginBottom: '20px'}}>
             <div className="col">
               <Card className="shadow">
@@ -338,7 +338,7 @@ class Tables extends React.Component {
                     <tr>
                       <th scope="col">Id</th>
                       <th scope="col">Fullname</th>
-                      <th scope="col">Phone</th>
+                      <th scope="col">Username</th>
                       <th scope="col">OTP</th>
                       <th scope="col">Regist Date</th>
                       <th scope="col">Status</th>
@@ -411,4 +411,4 @@ class Tables extends React.Component {
   }
 }
 
-export default Tables;
+export default Users;

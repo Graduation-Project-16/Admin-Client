@@ -45,7 +45,8 @@ class AdminNavbar extends React.Component {
       history.push('/auth/login');
     }
     this.state = {
-      isLogout: false
+      isLogout: false,
+      user: JSON.parse(user)
     }
   }
 
@@ -54,11 +55,6 @@ class AdminNavbar extends React.Component {
   }
 
   render() {
-
-    // if (this.state.isLogout) {
-    //   return <Redirect to="/auth/login"></Redirect>
-    // }
-
     return (
       <>
         <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -88,12 +84,12 @@ class AdminNavbar extends React.Component {
                     <span className="avatar avatar-sm rounded-circle">
                       <img
                         alt="..."
-                        src={require("assets/img/theme/team-4-800x800.jpg")}
+                        src={this.state.user.image.toString()}
                       />
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                        Jessica Jones
+                        {this.state.user.full_name}
                       </span>
                     </Media>
                   </Media>

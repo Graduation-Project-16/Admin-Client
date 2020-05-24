@@ -19,8 +19,23 @@ import React from "react";
 
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import Axios from "axios";
+import * as constant from '../../constants/config';
 
 class Header extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      lnum: 0,
+      unum: 0,
+      pnum: 0
+    }
+    Axios.get(constant.serverdomain + 'admin/summary').then(res => {
+      this.setState(res.data);
+    })
+  }
+
   render() {
     return (
       <>
@@ -41,7 +56,7 @@ class Header extends React.Component {
                             Livestream
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            350,897
+                            {this.state.lnum}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -68,10 +83,10 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            New users
+                            Sales
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            2,356
+                            .....
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -98,9 +113,11 @@ class Header extends React.Component {
                             tag="h5"
                             className="text-uppercase text-muted mb-0"
                           >
-                            Sales
+                            Users
                           </CardTitle>
-                          <span className="h2 font-weight-bold mb-0">924</span>
+                          <span className="h2 font-weight-bold mb-0">
+                          {this.state.unum}
+                          </span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -129,12 +146,12 @@ class Header extends React.Component {
                             Products
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            496
+                            {this.state.pnum}
                           </span>
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                            <i className="fas fa-percent" />
+                            <i className="fas fa-archive-2" />
                           </div>
                         </Col>
                       </Row>

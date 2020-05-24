@@ -18,9 +18,12 @@
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
-import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
+import Users from "views/examples/Users.js";
 import Icons from "views/examples/Icons.js";
+import Livestreams from "views/examples/Livestreams.js";
+import CatPro from "views/examples/CatPro";
+import Order from "views/examples/Order";
+import Login from "views/examples/Login"
 
 var routes = [
   {
@@ -55,15 +58,36 @@ var routes = [
     path: "/tables",
     name: "Users",
     icon: "ni ni-single-02 text-red",
-    component: Tables,
+    component: Users,
+    layout: "/admin"
+  },
+  {
+    path: "/livestream",
+    name: "Livestream",
+    icon: "ni ni-key-25 text-info",
+    component: Livestreams,
+    layout: "/admin"
+  },
+  {
+    path: "/product",
+    name: "Product",
+    icon: "ni ni-key-25 text-info",
+    component: CatPro,
+    layout: "/admin"
+  },
+  {
+    path: "/order",
+    name: "Order",
+    icon: "ni ni-pin-3 text-orange",
+    component: Order,
     layout: "/admin"
   },
   {
     path: "/login",
     name: "Login",
-    icon: "ni ni-key-25 text-info",
+    icon: "ni ni-pin-3 text-orange",
     component: Login,
     layout: "/auth"
-  }
+  },
 ];
 export default routes;
