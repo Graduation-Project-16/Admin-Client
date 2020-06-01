@@ -34,6 +34,22 @@ import {
 import UserHeader from "components/Headers/UserHeader.js";
 
 class Profile extends React.Component {
+
+  constructor(props) {
+    super(props);
+    const {history} = this.props;
+    const user = localStorage.getItem('user');
+    if (user === null) {
+      history.push('/auth/login');
+    }
+    this.state = {
+      isLogout: false,
+      user: JSON.parse(user)
+    }
+    console.log(user);
+  }
+
+
   render() {
     return (
       <>

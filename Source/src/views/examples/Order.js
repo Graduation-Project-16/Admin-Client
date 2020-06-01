@@ -19,25 +19,10 @@ import React from "react";
 
 // reactstrap components
 import {
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Table,
   Container,
-  Row,
 } from "reactstrap";
 // core components
 import Header from "components/Headers/Header.js";
-import Axios from "axios";
-import * as constant from '../../constants/config';
 import OrderList from "components/OrderList.js";
 
 class Order extends React.Component {
@@ -47,7 +32,7 @@ class Order extends React.Component {
         <Header />
         {/* Page content */}
         <Container className="mt--7" fluid>
-          <OrderList user_id={55}/>
+          <OrderList props={this.props} user_id={55}/>
         </Container>
       </>
     );

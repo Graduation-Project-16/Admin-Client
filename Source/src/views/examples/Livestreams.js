@@ -22,15 +22,7 @@ import {
   Badge,
   Card,
   CardHeader,
-  CardFooter,
-  // DropdownMenu,
-  // DropdownItem,
-  // UncontrolledDropdown,
-  // DropdownToggle,
   Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Table,
   Container,
   Row,
@@ -38,13 +30,15 @@ import {
 import Axios from 'axios';
 import * as constant from '../../constants/config'
 import Header from "components/Headers/Header.js";
+import Pagi from "components/Pagi";
 
 class Livestreams extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      Livestreams: []
+      Livestreams: [],
+      FullLivestreams: []
     }
 
     this.getListLivestream();
@@ -53,29 +47,30 @@ class Livestreams extends React.Component {
   getListLivestream = () => {
     Axios.get(constant.serverdomain + "live/all").then(res => {
       this.setState({
-        Livestreams: res.data
+        FullLivestreams: res.data,
+        Livestreams: res.data.slice(0,5)
       });
-      console.log(res.data);
     }).catch(err => {
       console.log(err);
     });
   }
 
-  activeUser = (element) => {
-    // let entity = {
-    //   id: element.id,
-    //   state: element.state === 1 ? 0 : 1,
-    // };
-    // Axios.post(constant.serverdomain + "admin/updateuser", entity).then(() => {
-    //   this.getListUser();
-    // })
+  viewLiveStream = livestream_id => {
+    const {history} = this.props;
+    history.push('/admin/viewlivestream/' + livestream_id);
+  }
+
+  changePage = page => {
+    this.setState({
+      Livestreams: constant.changePage(this.state.Livestreams, page)
+    });
   }
 
   getComponent = (arr) => {
     let Component = [];
     arr.forEach(elements => {
       Component.push(
-        <tr>
+        <tr onClick={e => {e.preventDefault(); this.viewLiveStream(elements.id)}}>
           <td>
             <Media className="align-items-center">
               <span className="mb-0 text-sm">
@@ -104,45 +99,16 @@ class Livestreams extends React.Component {
           <td>{elements.title}</td>
           <td>{elements.total_view}</td>
           <td>{elements.total_like}</td>
-          <td>{elements.start_time}</td>
+          <td>{constant.toLocalDateTime(elements.start_time)}</td>
           <td>
             {elements.end_time === null ? <Badge color="" className="badge-dot mr-4">
               <i className="bg-success" />
               Living
             </Badge> : <Badge color="" className="badge-dot mr-4">
                 <i className="bg-danger" />
-                {elements.end_time}
+                {constant.toLocalDateTime(elements.end_time)}
               </Badge>}
           </td>
-          
-          {/* <td className="text-right">
-            <UncontrolledDropdown>
-              <DropdownToggle
-                className="btn-icon-only text-light"
-                href="#pablo"
-                role="button"
-                size="sm"
-                color=""
-                onClick={e => e.preventDefault()}
-              >
-                <i className="fas fa-ellipsis-v" />
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-arrow" right>
-                <DropdownItem
-                  href=""
-                  onClick={e => this.activeUser(elements)}
-                >
-                  {elements.state === 1 ? 'Inactive' : 'Active'}
-                </DropdownItem>
-                <DropdownItem
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  Details
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </td> */}
         </tr>
       );
     }
@@ -180,58 +146,7 @@ class Livestreams extends React.Component {
                     {this.getComponent(this.state.Livestreams)}
                   </tbody>
                 </Table>
-                <CardFooter className="py-4">
-                  <nav aria-label="...">
-                    <Pagination
-                      className="pagination justify-content-end mb-0"
-                      listClassName="justify-content-end mb-0"
-                    >
-                      <PaginationItem className="disabled">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          tabIndex="-1"
-                        >
-                          <i className="fas fa-angle-left" />
-                          <span className="sr-only">Previous</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          2 <span className="sr-only">(current)</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          3
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className="fas fa-angle-right" />
-                          <span className="sr-only">Next</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                    </Pagination>
-                  </nav>
-                </CardFooter>
+                <Pagi data={this.state.FullLivestreams} changePageFunc={this.changePage}/>
               </Card>
             </div>
           </Row>

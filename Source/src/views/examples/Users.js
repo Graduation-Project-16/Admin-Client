@@ -22,15 +22,11 @@ import {
   Badge,
   Card,
   CardHeader,
-  CardFooter,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
   Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Table,
   Container,
   Row,
@@ -39,7 +35,7 @@ import {
 import Header from "components/Headers/Header.js";
 import Axios from "axios";
 import * as constant from '../../constants/config'
-
+import Pagi from "components/Pagi"
 class Users extends React.Component {
 
   constructor(props) {
@@ -48,6 +44,9 @@ class Users extends React.Component {
       Customers: [],
       Sellers: [],
       Admins: [],
+      FullCustomers: [],
+      FullSellers: [],
+      FullAdmins: [],
     }
 
     this.getListUser();
@@ -55,7 +54,14 @@ class Users extends React.Component {
 
   getListUser = () => {
     Axios.get(constant.serverdomain + "users/all").then(res => {
-      this.setState(res.data);
+      this.setState({
+        FullCustomers: res.data.Customers,
+        FullSellers: res.data.Sellers,
+        FullAdmins: res.data.Admins,
+        Admins: res.data.Admins.slice(0,5),
+        Sellers: res.data.Sellers.slice(0,5),
+        Customers: res.data.Customers.slice(0,5),
+      });
     }).catch(err => {
       console.log(err);
     });
@@ -71,11 +77,23 @@ class Users extends React.Component {
     })
   }
 
+  ViewUserDetail = id => {
+    const {history} = this.props;
+    console.log(this.props)
+    history.push('/admin/userprofile/'+id);
+  }
+
+  getPagination = (arr, f) => {
+    return (
+      <Pagi data={arr} changePageFunc={f}></Pagi>
+    )
+  }
+
   getComponent = (arr) => {
     let Component = [];
     arr.forEach(elements => {
       Component.push(
-        <tr>
+        <tr >
           <td>
             <Media className="align-items-center">
               <span className="mb-0 text-sm">
@@ -148,7 +166,7 @@ class Users extends React.Component {
                 </DropdownItem>
                 <DropdownItem
                   href="#pablo"
-                  onClick={e => e.preventDefault()}
+                  onClick={e => {e.preventDefault(); this.ViewUserDetail(elements.id)}} 
                 >
                   Details
                 </DropdownItem>
@@ -160,6 +178,25 @@ class Users extends React.Component {
     }
     )
     return Component;
+  }
+
+  customerChangePage = (page) => {
+    this.setState({
+      Customers: constant.changePage(this.state.FullCustomers, page)
+    })
+  }
+
+  sellerChangePage = (page) => {
+    this.setState({
+      Sellers: constant.changePage(this.state.FullSellers, page)
+    })
+  }
+
+  adminChangePage = (page) => {
+    console.log(page);
+    this.setState({
+      Admins: constant.changePage(this.state.FullAdmins, page)
+    })
   }
 
   render() {
@@ -191,59 +228,8 @@ class Users extends React.Component {
                     {this.getComponent(this.state.Customers)}
                   </tbody>
                 </Table>
-                <CardFooter className="py-4">
-                  <nav aria-label="...">
-                    <Pagination
-                      className="pagination justify-content-end mb-0"
-                      listClassName="justify-content-end mb-0"
-                    >
-                      <PaginationItem className="disabled">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          tabIndex="-1"
-                        >
-                          <i className="fas fa-angle-left" />
-                          <span className="sr-only">Previous</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          2 <span className="sr-only">(current)</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          3
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className="fas fa-angle-right" />
-                          <span className="sr-only">Next</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                    </Pagination>
-                  </nav>
-                </CardFooter>
-              </Card>
+                {this.getPagination(this.state.FullCustomers, this.customerChangePage)}
+                </Card>
             </div>
           </Row>
 
@@ -270,58 +256,7 @@ class Users extends React.Component {
                     {this.getComponent(this.state.Sellers)}
                   </tbody>
                 </Table>
-                <CardFooter className="py-4">
-                  <nav aria-label="...">
-                    <Pagination
-                      className="pagination justify-content-end mb-0"
-                      listClassName="justify-content-end mb-0"
-                    >
-                      <PaginationItem className="disabled">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          tabIndex="-1"
-                        >
-                          <i className="fas fa-angle-left" />
-                          <span className="sr-only">Previous</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          2 <span className="sr-only">(current)</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          3
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className="fas fa-angle-right" />
-                          <span className="sr-only">Next</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                    </Pagination>
-                  </nav>
-                </CardFooter>
+                {this.getPagination(this.state.FullSellers, this.sellerChangePage)}
               </Card>
             </div>
           </Row>
@@ -349,58 +284,7 @@ class Users extends React.Component {
                     {this.getComponent(this.state.Admins)}
                   </tbody>
                 </Table>
-                <CardFooter className="py-4">
-                  <nav aria-label="...">
-                    <Pagination
-                      className="pagination justify-content-end mb-0"
-                      listClassName="justify-content-end mb-0"
-                    >
-                      <PaginationItem className="disabled">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          tabIndex="-1"
-                        >
-                          <i className="fas fa-angle-left" />
-                          <span className="sr-only">Previous</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          2 <span className="sr-only">(current)</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          3
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className="fas fa-angle-right" />
-                          <span className="sr-only">Next</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                    </Pagination>
-                  </nav>
-                </CardFooter>
+                {this.getPagination(this.state.FullAdmins, this.adminChangePage)}
               </Card>
             </div>
           </Row>

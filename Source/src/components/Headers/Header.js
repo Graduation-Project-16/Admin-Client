@@ -29,7 +29,8 @@ class Header extends React.Component {
     this.state = {
       lnum: 0,
       unum: 0,
-      pnum: 0
+      pnum: 0,
+      sales: 0
     }
     Axios.get(constant.serverdomain + 'admin/summary').then(res => {
       this.setState(res.data);
@@ -86,7 +87,7 @@ class Header extends React.Component {
                             Sales
                           </CardTitle>
                           <span className="h2 font-weight-bold mb-0">
-                            .....
+                            {constant.toThousandString(this.state.sales)}
                           </span>
                         </div>
                         <Col className="col-auto">
@@ -151,7 +152,7 @@ class Header extends React.Component {
                         </div>
                         <Col className="col-auto">
                           <div className="icon icon-shape bg-info text-white rounded-circle shadow">
-                            <i className="fas fa-archive-2" />
+                            <i className="ni ni-app" />
                           </div>
                         </Col>
                       </Row>

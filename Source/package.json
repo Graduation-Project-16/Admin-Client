@@ -32,16 +32,20 @@
     "moment": "2.24.0",
     "node-sass": "4.13.1",
     "nouislider": "14.1.1",
-    "react": "16.12.0",
+    "react": "^16.12.0",
     "react-chartjs-2": "2.9.0",
     "react-copy-to-clipboard": "5.0.2",
     "react-datetime": "2.16.3",
-    "react-dom": "16.12.0",
+    "react-dom": "^16.12.0",
     "react-google-maps": "9.4.5",
     "react-router-dom": "5.1.2",
     "react-scripts": "3.4.0",
+    "react-star-ratings": "^2.3.0",
     "reactstrap": "8.4.1",
-    "sweetalert": "^2.1.2"
+    "redux": "^4.0.5",
+    "sweetalert": "^2.1.2",
+    "video-react": "^0.14.1",
+    "videojs-flash": "^2.2.1"
   },
   "devDependencies": {
     "@types/googlemaps": "3.39.2",
@@ -50,6 +54,7 @@
     "eslint-plugin-flowtype": "3.13.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
-    "typescript": "3.7.5"
+    "typescript": "3.7.5",
+    "video.js": "^7.8.2"
   }
 }

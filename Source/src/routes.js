@@ -16,7 +16,7 @@
 
 */
 import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
+import Profile from "views/examples/AdminProfile.js";
 import Maps from "views/examples/Maps.js";
 import Users from "views/examples/Users.js";
 import Icons from "views/examples/Icons.js";
@@ -24,7 +24,10 @@ import Livestreams from "views/examples/Livestreams.js";
 import CatPro from "views/examples/CatPro";
 import Order from "views/examples/Order";
 import Login from "views/examples/Login"
-
+import UserProfile from "views/examples/UserProfile";
+import OrderDetail from "views/examples/OrderDetail";
+import ProductReview from "views/examples/ProductReview";
+import ViewLivestream from "views/examples/ViewLivestream";
 var routes = [
   {
     path: "/index",
@@ -48,8 +51,8 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/user-profile",
-    name: "User Profile",
+    path: "/myprofile",
+    name: "",
     icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/admin"
@@ -84,10 +87,39 @@ var routes = [
   },
   {
     path: "/login",
-    name: "Login",
+    name: "",
     icon: "ni ni-pin-3 text-orange",
     component: Login,
     layout: "/auth"
   },
+  {
+    path: "/userprofile/:user_id",
+    name: "",
+    icon: "ni ni-pin-3 text-orange",
+    component: UserProfile,
+    layout: "/admin"
+  },
+  {
+    path: "/orderdetail/:order_id",
+    name: "",
+    icon: "ni ni-pin-3 text-orange",
+    component: OrderDetail,
+    layout: "/admin"
+  },
+  {
+    path: "/productreview/:product_id",
+    name: "",
+    icon: "ni ni-pin-3 text-orange",
+    component: ProductReview,
+    layout: "/admin"
+  },
+  {
+    path: "/viewlivestream/:livestream_id",
+    name: "",
+    icon: "ni ni-pin-3 text-orange",
+    component: ViewLivestream,
+    layout: "/admin"
+  },
+  
 ];
 export default routes;

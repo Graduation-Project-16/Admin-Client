@@ -21,24 +21,24 @@ import React from "react";
 import {
   Card,
   CardHeader,
-  CardFooter,
   DropdownMenu,
   DropdownItem,
   UncontrolledDropdown,
   DropdownToggle,
   Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   Table,
   Container,
   Row,
+  Col,
+  Button
 } from "reactstrap";
 import swal from 'sweetalert';
 // core components
 import Header from "components/Headers/Header.js";
 import Axios from "axios";
 import * as constant from '../../constants/config'
+import Pagi from "components/Pagi";
+import SearchBar from "components/SearchBar";
 
 class CatPro extends React.Component {
 
@@ -47,6 +47,8 @@ class CatPro extends React.Component {
     this.state = {
       Categories: [],
       Products: [],
+      FullCategories: [],
+      FullProducts: [],
     }
 
     this.getListProduct();
@@ -55,7 +57,10 @@ class CatPro extends React.Component {
 
   getListProduct = () => {
     Axios.get(constant.serverdomain + "product/all").then(res => {
-      this.setState(res.data);
+      this.setState({
+        FullProducts: res.data.Products,
+        Products: res.data.Products.slice(0, 5),
+      });
     }).catch(err => {
       console.log(err);
     });
@@ -63,7 +68,10 @@ class CatPro extends React.Component {
 
   getListCategory = () => {
     Axios.get(constant.serverdomain + "category/all").then(res => {
-      this.setState(res.data);
+      this.setState({
+        FullCategories: res.data.Categories,
+        Categories: res.data.Categories.slice(0, 5),
+      });
     }).catch(err => {
       console.log(err);
     });
@@ -73,20 +81,20 @@ class CatPro extends React.Component {
     swal("Type new name of Category:", {
       content: "input",
     })
-    .then((newName) => {
-      if (newName.trim() === "") {
-        swal(`Name is empty, please type valid name!`)
-      } else {
-        elements.name = newName;
-        delete elements['pnum'];
-        Axios.post(constant.serverdomain + "category/modify", elements).then(() => {
-          this.getListProduct();
-          swal(`Success change name to `, newName);
-        }).catch(err => {
-          swal(`Fail: `, err);
-        })
-      }
-    });
+      .then((newName) => {
+        if (newName.trim() === "") {
+          swal(`Name is empty, please type valid name!`)
+        } else {
+          elements.name = newName;
+          delete elements['pnum'];
+          Axios.post(constant.serverdomain + "category/modify", elements).then(() => {
+            this.getListProduct();
+            swal(`Success change name to `, newName);
+          }).catch(err => {
+            swal(`Fail: `, err);
+          })
+        }
+      });
   }
 
   deleteCategory = (elements) => {
@@ -110,8 +118,8 @@ class CatPro extends React.Component {
     let Component = [];
     arr.forEach(elements => {
       Component.push(
-        <tr 
-          onClick={e => {e.preventDefault(); this.getProductByCatID(elements.id);}}>
+        <tr
+          onClick={e => { e.preventDefault(); this.getProductByCatID(elements); }}>
           <td>
             <Media className="align-items-center">
               <span className="mb-0 text-sm">
@@ -167,11 +175,16 @@ class CatPro extends React.Component {
     return Component;
   }
 
+  viewProductReview = product_id => {
+    const { history } = this.props;
+    history.push('/admin/productreview/' + product_id);
+  }
+
   getProComponent = (arr) => {
     let Component = [];
     arr.forEach(elements => {
       Component.push(
-        <tr>
+        <tr onClick={e => { e.preventDefault(); this.viewProductReview(elements.id); }}>
           <td>
             <Media className="align-items-center">
               <span className="mb-0 text-sm">
@@ -201,7 +214,7 @@ class CatPro extends React.Component {
           </th>
 
           <td>{elements.category_id}</td>
-          <td>{elements.price}</td>
+          <td>{constant.toThousandString(elements.price)}</td>
           <td>{elements.owner_id}</td>
           <td>{elements.quantity}</td>
           <td>{elements.rate} sao</td>
@@ -210,39 +223,13 @@ class CatPro extends React.Component {
 
 
           <td className="text-right">
-            {/* <UncontrolledDropdown>
-              <DropdownToggle
-                className="btn-icon-only text-light"
-                href="#pablo"
-                role="button"
-                size="sm"
-                color=""
-                onClick={e => e.preventDefault()}
-              >
-                <i className="fas fa-ellipsis-v" />
-              </DropdownToggle>
-              <DropdownMenu className="dropdown-menu-arrow" right>
-                <DropdownItem
-                  href=""
-                  onClick={e => this.activeUser(elements)}
-                >
-                  {elements.state === 1 ? 'Inactive' : 'Active'}
-                </DropdownItem>
-                <DropdownItem
-                  href="#pablo"
-                  onClick={e => e.preventDefault()}
-                >
-                  Details
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>*/}
-            <a href="/" onClick={e => {e.preventDefault(); this.deleteProduct(elements)}} style={{width: '20px', height: '20px'}}>
-              {elements.isDelete === 0 ? 
-              <i className="ni ni-fat-remove text-red"></i>:
-              <i className="ni ni-fat-add text-green"></i>}
+            <a href="/" onClick={e => { e.preventDefault(); this.deleteProduct(elements) }} style={{ width: '20px', height: '20px' }}>
+              {elements.isDelete === 0 ?
+                <i className="ni ni-fat-remove text-red"></i> :
+                <i className="ni ni-fat-add text-green"></i>}
             </a>
-            
-          </td> 
+
+          </td>
         </tr>
       );
     }
@@ -250,18 +237,42 @@ class CatPro extends React.Component {
     return Component;
   }
 
-  getProductByCatID = id => {
-    if (id === 0) {
+  getProductByCatID = element => {
+
+
+    if (element === null) {
       this.getListProduct();
     } else {
-      Axios.get(constant.serverdomain + "product/productbycat/" + id).then(res => {
+      if (element.pnum === 0) {
         this.setState({
-          Products: res.data.products
+          Products: []
         });
-      }).catch(err => {
-        console.log(err);
-      });
+      } else {
+        Axios.get(constant.serverdomain + "product/productbycat/" + element.id).then(res => {
+          this.setState({
+            Products: res.data.products
+          });
+        }).catch(err => {
+          console.log(err);
+        });
+      }
     }
+  }
+
+  categoryChangePage = page => {
+    this.setState({
+      Categories: constant.changePage(this.state.FullCategories, page)
+    })
+  }
+
+  productChangePage = page => {
+    this.setState({
+      Products: constant.changePage(this.state.FullProducts, page)
+    })
+  }
+
+  productChangeText = e => {
+    
   }
 
   render() {
@@ -274,7 +285,7 @@ class CatPro extends React.Component {
           <Row style={{ marginBottom: '20px' }}>
             <div className="col">
               <Card className="shadow">
-                <CardHeader className="border-0">
+                <CardHeader classNameOrder="border-0">
                   <h3>Categories</h3>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
@@ -290,58 +301,7 @@ class CatPro extends React.Component {
                     {this.getCatComponent(this.state.Categories)}
                   </tbody>
                 </Table>
-                <CardFooter className="py-4">
-                  <nav aria-label="...">
-                    <Pagination
-                      className="pagination justify-content-end mb-0"
-                      listClassName="justify-content-end mb-0"
-                    >
-                      <PaginationItem className="disabled">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          tabIndex="-1"
-                        >
-                          <i className="fas fa-angle-left" />
-                          <span className="sr-only">Previous</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          2 <span className="sr-only">(current)</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          3
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className="fas fa-angle-right" />
-                          <span className="sr-only">Next</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                    </Pagination>
-                  </nav>
-                </CardFooter>
+                <Pagi data={this.state.FullCategories} changePageFunc={this.categoryChangePage}></Pagi>
               </Card>
             </div>
           </Row>
@@ -351,8 +311,24 @@ class CatPro extends React.Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 style={{display:'inline', height:'100%'}} className="mb-0">Products</h3>
-                  <button onClick={e => {e.preventDefault(); this.getProductByCatID(0);}} className="btn btn-success" style={{'float':'right'}}>All Categories</button>
+                  <Row className="align-items-center">
+                    <Col xs="1">
+                      <h3 className="mb-0">Product</h3>
+                    </Col>
+                    <Col className="text-left" xs="7">
+                      <Button
+                        color="primary"
+                        href="#pablo"
+                        onClick={e => { e.preventDefault(); this.getProductByCatID(null); }}
+                        size="sm"
+                      >
+                        All
+                      </Button>
+                    </Col>
+                    <Col className="text-right" xs="4">
+                      <SearchBar></SearchBar>
+                    </Col>
+                  </Row>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
@@ -372,58 +348,8 @@ class CatPro extends React.Component {
                     {this.getProComponent(this.state.Products)}
                   </tbody>
                 </Table>
-                <CardFooter className="py-4">
-                  <nav aria-label="...">
-                    <Pagination
-                      className="pagination justify-content-end mb-0"
-                      listClassName="justify-content-end mb-0"
-                    >
-                      <PaginationItem className="disabled">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          tabIndex="-1"
-                        >
-                          <i className="fas fa-angle-left" />
-                          <span className="sr-only">Previous</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          2 <span className="sr-only">(current)</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          3
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className="fas fa-angle-right" />
-                          <span className="sr-only">Next</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                    </Pagination>
-                  </nav>
-                </CardFooter>
+                <Pagi data={this.state.FullProducts} changePageFunc={this.productChangePage}></Pagi>
+
               </Card>
             </div>
           </Row>
