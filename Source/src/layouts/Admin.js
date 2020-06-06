@@ -33,7 +33,7 @@ class Admin extends React.Component {
     this.refs.mainContent.scrollTop = 0;
   }
   getRoutes = routes => {
-    return routes.map((prop, key) => {
+    return routes.map((prop, key) => { 
       if (prop.layout === "/admin") {
         return (
           <Route
@@ -76,7 +76,7 @@ class Admin extends React.Component {
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
           />
-          <Switch>
+          <Switch >
             {this.getRoutes(routes)}
             <Redirect from="*" to="/admin/index" />
           </Switch>

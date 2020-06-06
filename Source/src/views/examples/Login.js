@@ -68,6 +68,7 @@ class Login extends React.Component {
       pending: true,
     })
     axios.post(constant.serverdomain + "users/login", this.state).then(res => {
+      localStorage.setItem('token', JSON.stringify(res.data.token))
       const user = jwtDecode(res.data.token);
       localStorage.setItem('user', JSON.stringify(user));
       this.setState({

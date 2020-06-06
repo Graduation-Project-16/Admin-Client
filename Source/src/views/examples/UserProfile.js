@@ -91,7 +91,7 @@ class UserProfile extends React.Component {
 
     elements.forEach(element => {
       Components.push(
-        <tr onClick={e => {e.preventDefault(); this.viewUserProfile(element.id);}}>
+        <tr onClick={e => { e.preventDefault(); this.viewUserProfile(element.id); }}>
           <td>
             <Media className="align-items-center">
               <span className="mb-0 text-sm">
@@ -136,6 +136,8 @@ class UserProfile extends React.Component {
         <></>
       )
     }
+
+    console.log(this.state.user);
 
     return (
       <>
@@ -252,11 +254,12 @@ class UserProfile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-username"
                             >
-                              Username
+                              Full name
                             </label>
                             <Input
                               className="form-control-alternative"
-                              defaultValue="lucky.jesse"
+                              disabled
+                              defaultValue={this.state.user.full_name}
                               id="input-username"
                               placeholder="Username"
                               type="text"
@@ -272,8 +275,9 @@ class UserProfile extends React.Component {
                               Phone
                             </label>
                             <Input
+                              disabled
                               className="form-control-alternative"
-                              defaultValue="lucky.jesse"
+                              defaultValue={this.state.user.phone}
                               id="input-phone"
                               placeholder="Phone"
                               type="text"
@@ -288,11 +292,12 @@ class UserProfile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-first-name"
                             >
-                              First name
+                              Adress
                             </label>
                             <Input
+                              disabled
                               className="form-control-alternative"
-                              defaultValue="Lucky"
+                              defaultValue={this.state.user.address}
                               id="input-first-name"
                               placeholder="First name"
                               type="text"
@@ -305,11 +310,13 @@ class UserProfile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-email"
                             >
-                              Address
+                              Role
                             </label>
                             <Input
+                            disabled
                               className="form-control-alternative"
                               id="input-email"
+                              defaultValue={this.state.user.role === 1 ? "Customer" : this.state.user.role === 2 ? "Seller" : "Admin"}
                               placeholder="jesse@example.com"
                               type="email"
                             />

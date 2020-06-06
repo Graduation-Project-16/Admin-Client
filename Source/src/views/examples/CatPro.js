@@ -271,8 +271,16 @@ class CatPro extends React.Component {
     })
   }
 
-  productChangeText = e => {
-    
+  productChangeText = key => {
+    this.setState({
+      Products: constant.search(this.state.FullProducts, key)
+    })
+  }
+
+  categoryChangeText = key => {
+    this.setState({
+      Categories: constant.search(this.state.FullCategories, key)
+    })
   }
 
   render() {
@@ -286,7 +294,14 @@ class CatPro extends React.Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader classNameOrder="border-0">
-                  <h3>Categories</h3>
+                <Row className="align-items-center">
+                  <Col xs="8">
+                    <h3 className="mb-0">Categories</h3>
+                  </Col>
+                  <Col className="text-right" xs="4">
+                    <SearchBar searchFunction={this.categoryChangeText}></SearchBar>
+                  </Col>
+                  </Row>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
@@ -326,7 +341,7 @@ class CatPro extends React.Component {
                       </Button>
                     </Col>
                     <Col className="text-right" xs="4">
-                      <SearchBar></SearchBar>
+                      <SearchBar searchFunction={this.productChangeText}></SearchBar>
                     </Col>
                   </Row>
                 </CardHeader>

@@ -148,7 +148,6 @@ class Index extends React.Component {
 
   getSalesData = () => {
     Axios.get(constant.serverdomain + "admin/sales/month").then(res => {
-      console.log(res.data);
 
       let labels = [];
       for (let i = res.data.length - 1; i >= 0; i--) {
@@ -179,8 +178,6 @@ class Index extends React.Component {
 
   getOrderData = () => {
     Axios.get(constant.serverdomain + "admin/numorder/month").then(res => {
-      console.log(res.data);
-
       let labels = [];
       for (let i = res.data.length - 1; i >= 0; i--) {
         labels.push(res.data[i].mname.toString().substring(0,3));

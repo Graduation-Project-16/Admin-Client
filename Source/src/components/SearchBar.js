@@ -10,10 +10,19 @@ import {
 class SearchBar extends React.Component {
 
     constructor(props){
-        super(props)
+        super(props);
+        this.state = {
+            searchFunction: props.searchFunction
+        }
+        this.handleChange.bind(this)
+    }
+
+    handleChange = e => {
+        this.state.searchFunction(e.target.value);
     }
 
     render() {
+        
         return (
             <Form className="navbar-search">
               <FormGroup className="mb-0">
@@ -23,7 +32,7 @@ class SearchBar extends React.Component {
                       <i className="fas fa-search" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Search" type="text" />
+                  <Input placeholder="Search" type="text" onChange={this.handleChange}/>
                 </InputGroup>
               </FormGroup>
             </Form>

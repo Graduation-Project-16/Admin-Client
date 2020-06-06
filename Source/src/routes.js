@@ -17,9 +17,9 @@
 */
 import Index from "views/Index.js";
 import Profile from "views/examples/AdminProfile.js";
-import Maps from "views/examples/Maps.js";
+// import Maps from "views/examples/Maps.js";
 import Users from "views/examples/Users.js";
-import Icons from "views/examples/Icons.js";
+// import Icons from "views/examples/Icons.js";
 import Livestreams from "views/examples/Livestreams.js";
 import CatPro from "views/examples/CatPro";
 import Order from "views/examples/Order";
@@ -28,6 +28,7 @@ import UserProfile from "views/examples/UserProfile";
 import OrderDetail from "views/examples/OrderDetail";
 import ProductReview from "views/examples/ProductReview";
 import ViewLivestream from "views/examples/ViewLivestream";
+import Voucher from "views/examples/Voucher";
 var routes = [
   {
     path: "/index",
@@ -36,20 +37,20 @@ var routes = [
     component: Index,
     layout: "/admin"
   },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "ni ni-pin-3 text-orange",
-    component: Maps,
-    layout: "/admin"
-  },
+  // {
+  //   path: "/icons",
+  //   name: "Icons",
+  //   icon: "ni ni-planet text-blue",
+  //   component: Icons,
+  //   layout: "/admin"
+  // },
+  // {
+  //   path: "/maps",
+  //   name: "Maps",
+  //   icon: "ni ni-pin-3 text-orange",
+  //   component: Maps,
+  //   layout: "/admin"
+  // },
   {
     path: "/myprofile",
     name: "",
@@ -118,6 +119,13 @@ var routes = [
     name: "",
     icon: "ni ni-pin-3 text-orange",
     component: ViewLivestream,
+    layout: "/admin"
+  },
+  {
+    path: "/voucher",
+    name: "Voucher",
+    icon: "ni ni-pin-3 text-orange",
+    component: Voucher,
     layout: "/admin"
   },
   
