@@ -32,7 +32,7 @@ class Order extends React.Component {
         <Header />
         {/* Page content */}
         <Container className="mt--7" fluid>
-          <OrderList props={this.props} user_id={55}/>
+          <OrderList props={this.props} user_id={0}/>
         </Container>
       </>
     );
