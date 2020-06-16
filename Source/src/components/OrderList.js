@@ -53,8 +53,8 @@ class OrderList extends React.Component {
   getListOrder = () => {
     Axios.get(constant.serverdomain + "order/all").then(res => {
       this.setState({
-        FullOrders: res.data,
-        Orders: res.data.slice(0,5)
+        FullOrders: res.data.Orders,
+        Orders: res.data.Orders.slice(0,5)
       });
     }).catch(err => {
       console.log(err);
