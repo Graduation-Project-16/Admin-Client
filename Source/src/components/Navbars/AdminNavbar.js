@@ -169,7 +169,27 @@ class AdminNavbar extends React.Component {
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
-            </Nav>
+
+              <UncontrolledDropdown nav>
+                <DropdownToggle className="pr-0" nav>
+                    <i className="ni ni-bell-55 text-white" style={{marginLeft: '2px'}}/>  
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu-arrow" right>
+                  <DropdownItem tag={Link}>
+                    <div className="font-weight-bold">Livestream report</div>
+                    <div style={{fontSize: '12px'}}>User @123123 report @ShopHai livestream</div>
+                  </DropdownItem>
+                  <DropdownItem tag={Link}>
+                    <div className="font-weight-bold">Livestream report</div>
+                    <div style={{fontSize: '12px'}}>User @123123 report @ShopHai livestream</div>
+                  </DropdownItem>
+                  <DropdownItem tag={Link}>
+                    <div className="font-weight-bold">Livestream report</div>
+                    <div style={{fontSize: '12px'}}>User @123123 report @ShopHai livestream</div>
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+              </Nav>
           </Container>
         </Navbar>
 

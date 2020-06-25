@@ -1,5 +1,5 @@
-export const serverdomain = "https://graserver.herokuapp.com/";
-// export const serverdomain = "http://localhost:5001/";
+// export const serverdomain = "https://graserver.herokuapp.com/";
+export const serverdomain = "http://localhost:5001/";
 export const toThousandString = input => {
     return input.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ"
 }

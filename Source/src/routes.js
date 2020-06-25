@@ -29,6 +29,7 @@ import OrderDetail from "views/examples/OrderDetail";
 import ProductReview from "views/examples/ProductReview";
 import ViewLivestream from "views/examples/ViewLivestream";
 import Voucher from "views/examples/Voucher";
+import Icons from "views/examples/Icons";
 var routes = [
   {
     path: "/index",
@@ -126,6 +127,13 @@ var routes = [
     name: "Voucher",
     icon: "ni ni-pin-3 text-orange",
     component: Voucher,
+    layout: "/admin"
+  },
+  {
+    path: "/icons",
+    name: "Icons",
+    icon: "ni ni-pin-3 text-orange",
+    component: Icons,
     layout: "/admin"
   },
   

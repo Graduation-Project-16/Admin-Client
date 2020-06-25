@@ -34,7 +34,9 @@ import Header from "components/Headers/Header";
 import VideoPlayer from "components/VideoPlayer";
 import Axios from 'axios';
 import * as constant from '../../constants/config';
+import io from 'socket.io-client';
 
+const socket = io(constant.serverdomain);
 class ViewLivestream extends React.Component {
 
     constructor(props) {
@@ -45,15 +47,26 @@ class ViewLivestream extends React.Component {
         this.getLivestreamDetail();
     }
 
+    onJoinThisLivestream(){
+        socket.emit("join_livestream", {
+            livestream: this.state.livestream
+        });
+    }
+
     getLivestreamDetail() {
         Axios.get(constant.serverdomain + 'live/detail/' + this.props.match.params.livestream_id).then(res => {
             this.setState({
                 livestream: res.data
             });
             console.log(this.state.livestream);
+            this.onJoinThisLivestream();
         }).catch(err => {
             console.log(err);
         })
+    }
+
+    banLivestream = () => {
+        socket.emit("ban");
     }
 
     render() {
@@ -66,7 +79,7 @@ class ViewLivestream extends React.Component {
             },
             sources: [
                 {
-                    src: this.state.livestream ? this.state.livestream : '',
+                    src: "rtmps://live-api-s.facebook.com:443/rtmp/2630106580592447?s_bl=1&s_ps=1&s_sw=0&s_vt=api-s&a=Abx5sm52XKXb-7y0l8M",
                     type: "rtmp/flv"
                 }
             ]
@@ -103,7 +116,7 @@ class ViewLivestream extends React.Component {
                                             className="float-right"
                                             color="default"
                                             href="#pablo"
-                                            onClick={e => e.preventDefault()}
+                                            onClick={e => {e.preventDefault(); this.banLivestream()}}
                                             size="sm"
                                         >
                                             Ban
