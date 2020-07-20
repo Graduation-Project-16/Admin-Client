@@ -136,6 +136,6 @@ var routes = [
     component: Icons,
     layout: "/admin"
   },
-  
+
 ];
 export default routes;
